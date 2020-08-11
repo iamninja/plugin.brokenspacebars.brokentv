@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 from HTMLParser import HTMLParser
 from StringIO import StringIO
@@ -21,3 +23,12 @@ def strip_tags(html):
 def strip_tags_re(html):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', html)
+
+# Format list item label
+def get_label(title, expiration):
+    if (expiration):
+        return (title + "[CR]" + "[COLOR red]" + "[LIGHT]" +
+        "(Available until " + expiration + ")" + 
+        "[/LIGHT]" + "[/COLOR]")
+    else:
+        return (title)

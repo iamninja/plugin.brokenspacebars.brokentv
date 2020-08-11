@@ -1,5 +1,6 @@
-from resources.lib.utils.textformat import strip_tags
+# -*- coding: utf-8 -*-
 
+from resources.lib.utils.textformat import strip_tags
 
 class Movie:
     def __init__(self,
@@ -19,3 +20,15 @@ class Movie:
         self.menu_img_url = menu_img_url
         self.sima_katallilotitas = sima_katallilotitas
         self.series_ep_num = series_ep_num
+    
+    def getMovieInfo(self):
+        return {
+            'plot': self.desc,
+            'plotoutline': self.short_desc
+        }
+
+    def getMovieArt(self):
+        return {
+            'fanart': self.org,
+            'thumb': self.image
+        }
