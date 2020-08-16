@@ -19,35 +19,43 @@ plugin = routing.Plugin()
 
 @plugin.route('/')
 def index():
-    print("got in")
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_movies), ListItem("Movies"), True)
+        plugin.url_for(ertflix_index), ListItem("ERTflix"), True)
+    # addDirectoryItem(plugin.handle, "plugin://plugin.video.youtube/channel/property?id=UCwUNbp_4Y2Ry-asyerw2jew", ListItem("Star"), False)
+
+    endOfDirectory(plugin.handle)
+
+@plugin.route('/ertflix')
+def ertflix_index():
+    print("got in ertflix")
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "tv"), ListItem("TV Series"), True)
+        plugin.url_for(ertflix_show_movies), ListItem("Movies"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "web"), ListItem("Web Series"), True)
+        plugin.url_for(ertflix_show_series, "tv"), ListItem("TV Series"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "documentaries"), ListItem("Documentaries"), True)
+        plugin.url_for(ertflix_show_series, "web"), ListItem("Web Series"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "greek_documentaries"), ListItem("Greek Documentaries"), True)
+        plugin.url_for(ertflix_show_series, "documentaries"), ListItem("Documentaries"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "entertainment"), ListItem("Entertainment"), True)
+        plugin.url_for(ertflix_show_series, "greek_documentaries"), ListItem("Greek Documentaries"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "interviews"), ListItem("Interviews"), True)
+        plugin.url_for(ertflix_show_series, "entertainment"), ListItem("Entertainment"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "sports"), ListItem("Sports"), True)
+        plugin.url_for(ertflix_show_series, "interviews"), ListItem("Interviews"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "cartoons"), ListItem("Cartoons"), True)
+        plugin.url_for(ertflix_show_series, "sports"), ListItem("Sports"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "learn_at_home"), ListItem("Learn At Home"), True)
+        plugin.url_for(ertflix_show_series, "cartoons"), ListItem("Cartoons"), True)
     addDirectoryItem(plugin.handle, 
-        plugin.url_for(show_series, "ert_remembers"), ListItem("ERT Remembers"), True)
+        plugin.url_for(ertflix_show_series, "learn_at_home"), ListItem("Learn At Home"), True)
+    addDirectoryItem(plugin.handle, 
+        plugin.url_for(ertflix_show_series, "ert_remembers"), ListItem("ERT Remembers"), True)
     endOfDirectory(plugin.handle)
     
 
 
-@plugin.route('/category/movies')
-def show_movies():
+@plugin.route('/ertflix/category/movies')
+def ertflix_show_movies():
     movie_list = hbbtvert.get_movie_list()
     setContent(plugin.handle, 'video')
     for movie in movie_list:
@@ -61,8 +69,8 @@ def show_movies():
         addDirectoryItem(plugin.handle, url, list_item, is_folder)
     endOfDirectory(plugin.handle)
 
-@plugin.route('/category/series/<series_type>')
-def show_series(series_type):
+@plugin.route('/ertflix/category/series/<series_type>')
+def ertflix_show_series(series_type):
     series_list = hbbtvert.get_series_list(series_type)
     setContent(plugin.handle, 'video')
     for series in series_list:
@@ -71,14 +79,14 @@ def show_series(series_type):
         list_item.setInfo('video', series.getSeriesInfo())
         list_item.setArt(series.getSeriesArt())
         list_item.setProperty('IsPlayable', 'false')
-        url = plugin.url_for(show_episodes, series_type, series.idnam)
+        url = plugin.url_for(ertflix_show_episodes, series_type, series.idnam)
 
         is_folder = True
         addDirectoryItem(plugin.handle, url, list_item, is_folder)
     endOfDirectory(plugin.handle)
 
-@plugin.route('/category/series/<series_type>/<idnam>')
-def show_episodes(series_type, idnam):
+@plugin.route('ertflix/category/series/<series_type>/<idnam>')
+def ertflix_show_episodes(series_type, idnam):
     episode_list = hbbtvert.get_episode_list(idnam)
     setContent(plugin.handle, 'video')
     for episode in episode_list:
