@@ -9,6 +9,9 @@ from resources.lib.utils import kodiutils
 from resources.lib.utils import kodilogging
 from resources.lib.utils.textformat import get_label
 from resources.lib.hbbtvert import hbbtvert
+from resources.lib.alpha import alpha
+from resources.lib.star import star
+from resources.lib.skai import skai
 from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory, setContent
 
@@ -22,6 +25,8 @@ def index():
     addDirectoryItem(plugin.handle, 
         plugin.url_for(ertflix_index), ListItem("ERTflix"), True)
     # addDirectoryItem(plugin.handle, "plugin://plugin.video.youtube/channel/property?id=UCwUNbp_4Y2Ry-asyerw2jew", ListItem("Star"), False)
+    addDirectoryItem(plugin.handle, 
+        plugin.url_for(live_index), ListItem("Live TV"), True)
 
     endOfDirectory(plugin.handle)
 
@@ -85,7 +90,7 @@ def ertflix_show_series(series_type):
         addDirectoryItem(plugin.handle, url, list_item, is_folder)
     endOfDirectory(plugin.handle)
 
-@plugin.route('ertflix/category/series/<series_type>/<idnam>')
+@plugin.route('/ertflix/category/series/<series_type>/<idnam>')
 def ertflix_show_episodes(series_type, idnam):
     episode_list = hbbtvert.get_episode_list(idnam)
     setContent(plugin.handle, 'video')
@@ -98,6 +103,30 @@ def ertflix_show_episodes(series_type, idnam):
         url = episode.mp4
         is_folder = False
         addDirectoryItem(plugin.handle, url, list_item, is_folder)
+    endOfDirectory(plugin.handle)
+
+@plugin.route('/livetv')
+def live_index():
+    setContent(plugin.handle, 'video')
+
+    # Alpha TV
+    live_item = ListItem(label=("Alpha Live TV"))
+    live_item.setInfo('video', {})
+    live_item.setProperty('IsPlayable', 'true')
+    addDirectoryItem(plugin.handle, alpha.get_live_url(), live_item, isFolder=False)
+
+    # Star TV
+    live_item = ListItem(label=("Star Live TV"))
+    live_item.setInfo('video', {})
+    live_item.setProperty('IsPlayable', 'true')
+    addDirectoryItem(plugin.handle, star.get_live_url(), live_item, isFolder=False)
+
+    # Skai TV
+    live_item = ListItem(label=("Skai Live TV"))
+    live_item.setInfo('video', {})
+    live_item.setProperty('IsPlayable', 'true')
+    addDirectoryItem(plugin.handle, skai.get_live_url(), live_item, isFolder=False)
+    
     endOfDirectory(plugin.handle)
 
 def run():

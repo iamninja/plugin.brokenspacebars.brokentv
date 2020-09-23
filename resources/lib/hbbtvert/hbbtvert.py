@@ -3,8 +3,6 @@
 import requests
 import json
 from pprint import pprint
-import xbmcgui
-import xbmcplugin
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 from resources.lib.models.movie import Movie
